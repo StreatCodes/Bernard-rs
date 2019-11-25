@@ -8,11 +8,10 @@ use rand::prelude::*;
 use rand::RngCore;
 use rand_chacha::ChaCha20Rng;
 use std::vec::Vec;
-use serde::{Deserialize};
 use error::BernardError;
-use net::{HostId, ClientManager, Request, Response, Message, MessageType, HealthCheckRequest, HealthCheckResponse, Client};
+use bernard::{HostId, Request, HealthCheckRequest,};
+use net::{ClientManager};
 use std::sync::Arc;
-use tokio::codec::{Framed, LengthDelimitedCodec, LengthDelimitedCodecError};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {

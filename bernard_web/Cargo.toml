@@ -16,3 +16,4 @@ rand_chacha = "0.2.1"
 serde = { version = "1.0.102", features = ["derive"] }
 bincode = "1.2.0"
 bytes = "0.4.12"
+bernard = { version = "=0.1.0", path = "../bernard" }

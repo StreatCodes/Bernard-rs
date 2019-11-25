@@ -1,4 +1,4 @@
-use std::{convert, io, error, fmt, boxed};
+use std::{convert, io, error, fmt};
 
 #[derive(Debug)]
 pub struct BernardError {

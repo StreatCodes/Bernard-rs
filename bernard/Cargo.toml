@@ -1,5 +1,5 @@
 [package]
-name = "bernard_agent"
+name = "bernard"
 version = "0.1.0"
 authors = ["StreatCodes <matt.r.streatfield@gmail.com>"]
 edition = "2018"
@@ -7,12 +7,7 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-tokio = "0.2.0-alpha.6"
 sodiumoxide = "0.2.5"
-rand = "0.7.2"
-log = "0.4.8"
-rand_chacha = "0.2.1"
 serde = { version = "1.0.102", features = ["derive"] }
 bincode = "1.2.0"
 bytes = "0.4.12"
-bernard = { version = "=0.1.0", path = "../bernard" }

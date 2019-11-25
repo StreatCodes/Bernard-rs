@@ -1,13 +1,9 @@
 use tokio::prelude::*;
-use tokio::net::{TcpListener, TcpStream};
+use tokio::net::{TcpStream};
 use sodiumoxide::crypto::secretstream::xchacha20poly1305 as chacha;
-use rand::prelude::*;
-use rand::RngCore;
-use rand_chacha::ChaCha20Rng;
 use std::vec::Vec;
-use serde::{Deserialize};
-use std::sync::Arc;
-use tokio::codec::{Framed, LengthDelimitedCodec, LengthDelimitedCodecError};
+use tokio::codec::{Framed, LengthDelimitedCodec};
+use bernard::{Message, MessageType, Response, HealthCheckResponse};
 
 #[tokio::main]
 async fn main() {
@@ -30,39 +26,39 @@ async fn connect_to_parent() {
 
     let mut framed = Framed::new(stream, LengthDelimitedCodec::new());
 
-    // while let Some(raw_message) = framed.next().await {
-    //     println!("Client received message");
-    //     let raw_message = raw_message.expect("Failed to decode raw message");
-    //     let message = Message::from_encoded_bytes(raw_message, &mut decryptor);
+    while let Some(raw_message) = framed.next().await {
+        println!("Client received message");
+        let raw_message = raw_message.expect("Failed to decode raw message");
+        let message = Message::from_encoded_bytes(raw_message, &mut decryptor);
 
-    //     match message.destination_route.split_first() {
-    //         Some((next, remaining_dests)) => {
-    //             println!("Forwarding message");
-    //         },
-    //         None => {
-    //             match message.message {
-    //                 MessageType::Request(req) => {
-    //                     println!("Recieved request {}", message.id);
-    //                     let response = Message{
-    //                         id: 1,
-    //                         destination_route: Vec::new(),
-    //                         message: 
-    //                             MessageType::Response(
-    //                                 Response::HealthCheck(HealthCheckResponse{})
-    //                             )
-    //                     };
+        match message.destination_route.split_first() {
+            Some((next, remaining_dests)) => {
+                println!("Forwarding message");
+            },
+            None => {
+                match message.message {
+                    MessageType::Request(req) => {
+                        println!("Recieved request {}", message.id);
+                        let response = Message{
+                            id: 1,
+                            destination_route: Vec::new(),
+                            message: 
+                                MessageType::Response(
+                                    Response::HealthCheck(HealthCheckResponse{})
+                                )
+                        };
 
-    //                     let bytes = response.encode_and_encrypt(&mut encryptor);
-    //                     framed.send(bytes.freeze()).await.unwrap();
+                        let bytes = response.encode_and_encrypt(&mut encryptor);
+                        framed.send(bytes.freeze()).await.unwrap();
 
-    //                 },
-    //                 MessageType::Response(res) => {
-    //                     println!("Received response");
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
+                    },
+                    MessageType::Response(res) => {
+                        println!("Received response");
+                    }
+                }
+            }
+        }
+    }
 }
 
 async fn resolve_server_challenge(stream: &mut TcpStream) ->
