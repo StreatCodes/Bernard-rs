@@ -1,0 +1,4 @@
+/target
+/bernard_agent/target
+/bernard_web/target
+**/*.rs.bk

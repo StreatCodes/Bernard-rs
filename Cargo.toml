@@ -1,0 +1,6 @@
+[workspace]
+
+members = [
+  "bernard_agent",
+  "bernard_web",
+]
