@@ -93,24 +93,23 @@ impl Stream for MessageHandler {
     type Item = Result<BytesMut, std::io::Error>;
 
     fn poll_next(mut self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Option<Self::Item>> {
-        println!("Poll next called");
-
         if let Poll::Pending = Pin::new(&mut self.stream).poll_ready(cx) {
             return Poll::Pending;
         }
 
+        //Poll for mpsc messages
         if let Poll::Ready(Some(message)) = self.receiver.poll_next_unpin(cx) {
             println!("Sending message");
             let bytes = message.encode_and_encrypt(&mut self.encryptor);
             Pin::new(&mut self.stream).start_send(bytes.freeze()).expect("Failed to start sending");
 
             match Pin::new(&mut self.stream).poll_flush(cx) {
-                Poll::Pending => {println!("Pending flush"); return Poll::Pending},
-                Poll::Ready(res) => {println!("Flushed");}
+                Poll::Pending => {return Poll::Pending},
+                Poll::Ready(res) => {println!("Message flushed");}
             }
         }
 
-        // Secondly poll the `Framed` stream.
+        //Poll for tcp stream frames
         if let Poll::Ready(raw_message) = self.stream.poll_next_unpin(cx) {
             println!("Received message in poll");
             let bytes = match raw_message {

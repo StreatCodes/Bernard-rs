@@ -2,6 +2,8 @@ use sodiumoxide::crypto::secretstream::xchacha20poly1305 as chacha;
 use serde::{Serialize, Deserialize};
 use bytes::BytesMut;
 
+pub mod error;
+
 pub type HostId = [u8; 16];
 pub type DestinationRoute = Vec<[u8; 16]>;
 

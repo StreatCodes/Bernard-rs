@@ -1,4 +1,3 @@
-mod error;
 mod net;
 
 use tokio::prelude::*;
@@ -8,7 +7,7 @@ use rand::prelude::*;
 use rand::RngCore;
 use rand_chacha::ChaCha20Rng;
 use std::vec::Vec;
-use error::BernardError;
+use bernard::error::Error;
 use bernard::{HostId, Request, HealthCheckRequest,};
 use net::{ClientManager};
 use std::sync::Arc;
@@ -76,7 +75,7 @@ async fn challenge_client(stream: &mut TcpStream) -> (HostId, chacha::Stream<cha
 }
 
 async fn verify_client_challenge(stream: &mut TcpStream, solved_challenge: Vec<u8>)
-    -> Result<chacha::Stream<chacha::Pull>, BernardError> {
+    -> Result<chacha::Stream<chacha::Pull>, Error> {
     println!("waiting for client to resolve challenge");
     let mut header_buf = vec![0; chacha::HEADERBYTES];
     stream.read_exact(&mut header_buf).await?;
@@ -96,7 +95,7 @@ async fn verify_client_challenge(stream: &mut TcpStream, solved_challenge: Vec<u
         .expect("Couldn't decode challenge");
 
     if client_challenge != solved_challenge {
-        Err(BernardError::new(String::from("Client failed challenge")))
+        Err(Error::new(String::from("Client failed challenge")))
     } else {
         println!("Client succeeded");
         Ok(decryptor)
