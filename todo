@@ -1,0 +1,2 @@
+Make MessageType dyn T: impl request + respond
+Create CheckSystemInfo to get systeminfo, it should be the first request a client receives
