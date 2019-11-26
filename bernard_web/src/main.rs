@@ -8,7 +8,7 @@ use rand::RngCore;
 use rand_chacha::ChaCha20Rng;
 use std::vec::Vec;
 use bernard::error::Error;
-use bernard::{HostId, Request, HealthCheckRequest,};
+use bernard::{HostId, Request, CheckHealthRequest,};
 use net::{ClientManager};
 use std::sync::Arc;
 
@@ -35,7 +35,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
             client_manager.add_client(host_id, stream, encryptor, decryptor).await;
 
-            client_manager.send_message(host_id, Request::HealthCheck(HealthCheckRequest{})).await;
+            client_manager.send_message(host_id, Request::CheckHealth(CheckHealthRequest{})).await;
         });
     }
 }

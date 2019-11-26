@@ -3,7 +3,7 @@ use tokio::net::{TcpStream};
 use sodiumoxide::crypto::secretstream::xchacha20poly1305 as chacha;
 use std::vec::Vec;
 use tokio::codec::{Framed, LengthDelimitedCodec};
-use bernard::{Message, MessageType, Response, HealthCheckResponse};
+use bernard::{Message, MessageType, Response, CheckHealthResponse};
 
 #[tokio::main]
 async fn main() {
@@ -44,7 +44,7 @@ async fn connect_to_parent() {
                             destination_route: Vec::new(),
                             message: 
                                 MessageType::Response(
-                                    Response::HealthCheck(HealthCheckResponse{})
+                                    Response::CheckHealth(CheckHealthResponse{})
                                 )
                         };
 

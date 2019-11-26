@@ -46,16 +46,16 @@ pub enum MessageType {
 
 #[derive(Serialize, Deserialize, Debug)]
 pub enum Request {
-    HealthCheck(HealthCheckRequest)
+    CheckHealth(CheckHealthRequest)
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub enum Response {
-    HealthCheck(HealthCheckResponse)
+    CheckHealth(CheckHealthResponse)
 }
 
 #[derive(Serialize, Deserialize, Debug)]
-pub struct HealthCheckRequest {}
+pub struct CheckHealthRequest {}
 
 #[derive(Serialize, Deserialize, Debug)]
-pub struct HealthCheckResponse {}
+pub struct CheckHealthResponse {}
