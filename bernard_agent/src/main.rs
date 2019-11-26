@@ -1,5 +1,7 @@
 use tokio::prelude::*;
 use tokio::net::{TcpStream};
+use tokio::timer;
+use std::time::Duration;
 use sodiumoxide::crypto::secretstream::xchacha20poly1305 as chacha;
 use std::vec::Vec;
 use tokio::codec::{Framed, LengthDelimitedCodec};
@@ -14,8 +16,18 @@ async fn main() {
 
 async fn connect_to_parent() {
     let parent = "127.0.0.1:9359"; 
+    let retry_time = 5;
+
     println!("Connecting to {}", parent);
-    let mut stream = TcpStream::connect(parent).await.unwrap();
+    let mut stream = loop {
+        match TcpStream::connect(parent).await {
+            Ok(stream) => break stream,
+            Err(e) => {
+                println!("Error connecting to parent: {}. Retrying in {} seconds.", e, retry_time);
+                timer::delay_for(Duration::from_secs(retry_time)).await;
+            }
+        };
+    };
 
     let host_id = b"1234567890123456";
     println!("Connected, sending hello");
@@ -33,7 +45,7 @@ async fn connect_to_parent() {
 
         match message.destination_route.split_first() {
             Some((next, remaining_dests)) => {
-                println!("Forwarding message");
+                println!("Forwarding message TODO");
             },
             None => {
                 match message.message {

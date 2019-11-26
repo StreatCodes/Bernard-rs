@@ -1,4 +1,3 @@
-refactor check naming
 Create CheckSystemInfo to get systeminfo, it should be the first request a client receives
 Make health check work
 create a scheduling task in bernard web to check all cleints
