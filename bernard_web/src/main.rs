@@ -8,7 +8,8 @@ use rand::RngCore;
 use rand_chacha::ChaCha20Rng;
 use std::vec::Vec;
 use bernard::error::Error;
-use bernard::{HostId, Request, CheckHealthRequest,};
+use bernard::{HostId};
+use bernard::check::{Request, CheckHealthRequest};
 use net::{ClientManager};
 use std::sync::Arc;
 

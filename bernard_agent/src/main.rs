@@ -5,12 +5,11 @@ use std::time::Duration;
 use sodiumoxide::crypto::secretstream::xchacha20poly1305 as chacha;
 use std::vec::Vec;
 use tokio::codec::{Framed, LengthDelimitedCodec};
-use bernard::{Message, MessageType, Response, CheckHealthResponse};
+use bernard::{Message, MessageType};
+use bernard::check::{Response, CheckHealthResponse};
 
 #[tokio::main]
 async fn main() {
-    println!("Hello, world!");
-
     connect_to_parent().await;
 }
 

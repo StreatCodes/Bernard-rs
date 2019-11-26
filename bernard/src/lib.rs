@@ -1,8 +1,10 @@
 use sodiumoxide::crypto::secretstream::xchacha20poly1305 as chacha;
 use serde::{Serialize, Deserialize};
 use bytes::BytesMut;
+use check::{Request, Response};
 
 pub mod error;
+pub mod check;
 
 pub type HostId = [u8; 16];
 pub type DestinationRoute = Vec<[u8; 16]>;
@@ -43,19 +45,3 @@ pub enum MessageType {
     Request(Request),
     Response(Response)
 }
-
-#[derive(Serialize, Deserialize, Debug)]
-pub enum Request {
-    CheckHealth(CheckHealthRequest)
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-pub enum Response {
-    CheckHealth(CheckHealthResponse)
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-pub struct CheckHealthRequest {}
-
-#[derive(Serialize, Deserialize, Debug)]
-pub struct CheckHealthResponse {}

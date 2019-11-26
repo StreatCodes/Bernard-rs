@@ -9,7 +9,8 @@ use std::task::{Context, Poll};
 use tokio::codec::{Framed, LengthDelimitedCodec};
 use bytes::BytesMut;
 use std::sync::atomic::{AtomicU64, Ordering};
-use bernard::{HostId, Message, MessageType, Request};
+use bernard::{HostId, Message, MessageType};
+use bernard::check::{Request};
 
 pub struct ClientManager {
     message_count: AtomicU64,
