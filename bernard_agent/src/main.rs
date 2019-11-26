@@ -1,12 +1,14 @@
 use tokio::prelude::*;
 use tokio::net::{TcpStream};
-use tokio::timer;
+use tokio::time;
 use std::time::Duration;
 use sodiumoxide::crypto::secretstream::xchacha20poly1305 as chacha;
 use std::vec::Vec;
-use tokio::codec::{Framed, LengthDelimitedCodec};
+use tokio_util::codec::{Framed, LengthDelimitedCodec};
 use bernard::{Message, MessageType};
 use bernard::check::{Response, CheckHealthResponse};
+use futures_util::stream::StreamExt;
+use futures_util::sink::SinkExt;
 
 #[tokio::main]
 async fn main() {
@@ -23,7 +25,7 @@ async fn connect_to_parent() {
             Ok(stream) => break stream,
             Err(e) => {
                 println!("Error connecting to parent: {}. Retrying in {} seconds.", e, retry_time);
-                timer::delay_for(Duration::from_secs(retry_time)).await;
+                time::delay_for(Duration::from_secs(retry_time)).await;
             }
         };
     };

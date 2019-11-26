@@ -27,7 +27,7 @@ impl Message {
             chacha::Tag::Message
         ).expect("Failed to encrypt message");
 
-        BytesMut::from(encrypted_message)
+        BytesMut::from(&encrypted_message[..])
     }
     pub fn from_encoded_bytes(bytes: BytesMut, decryptor: &mut chacha::Stream<chacha::Pull>) -> Self {
         let (raw_message, _) = decryptor.pull(&bytes, None)

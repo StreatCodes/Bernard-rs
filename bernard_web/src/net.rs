@@ -1,16 +1,19 @@
 use sodiumoxide::crypto::secretstream::xchacha20poly1305 as chacha;
 use std::collections::HashMap;
 use tokio::prelude::*;
-use tokio::net::tcp::TcpStream;
+use tokio::net::TcpStream;
 use tokio::sync::Mutex;
 use tokio::sync::mpsc::{self, Sender, Receiver};
 use std::pin::{Pin};
 use std::task::{Context, Poll};
-use tokio::codec::{Framed, LengthDelimitedCodec};
+use tokio_util::codec::{Framed, LengthDelimitedCodec};
 use bytes::BytesMut;
 use std::sync::atomic::{AtomicU64, Ordering};
 use bernard::{HostId, Message, MessageType};
 use bernard::check::{Request};
+use futures::stream::{Stream};
+use futures_util::stream::StreamExt;
+use futures_util::sink::Sink;
 
 pub struct ClientManager {
     message_count: AtomicU64,

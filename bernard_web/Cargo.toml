@@ -7,7 +7,10 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-tokio = "0.2.0-alpha.6"
+futures = "0.3.1"
+futures-util = "0.3.1"
+tokio = { version = "0.2.0", features = ["full"]}
+tokio-util = { version = "0.2.0", features = ["codec"]}
 sodiumoxide = "0.2.5"
 rand = "0.7.2"
 log = "0.4.8"
@@ -15,5 +18,5 @@ hex = "0.4.0"
 rand_chacha = "0.2.1"
 serde = { version = "1.0.102", features = ["derive"] }
 bincode = "1.2.0"
-bytes = "0.4.12"
+bytes = "0.5.0"
 bernard = { version = "=0.1.0", path = "../bernard" }
