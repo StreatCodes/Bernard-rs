@@ -61,6 +61,7 @@ impl ClientManager {
                     Ok(bytes) => {
                         let message = Message::from_encoded_bytes(bytes, &mut decryptor);
                         println!("Message received");
+                        println!("{:#?}", message);
                     },
                     Err(e) => {println!("Error")}
                 }

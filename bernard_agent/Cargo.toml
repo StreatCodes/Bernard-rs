@@ -19,4 +19,4 @@ serde = { version = "1.0.102", features = ["derive"] }
 bincode = "1.2.0"
 bytes = "0.5.0"
 bernard = { version = "=0.1.0", path = "../bernard" }
-heim = "0.0.8"
+sysinfo = "0.10.1"

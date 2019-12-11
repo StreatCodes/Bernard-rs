@@ -9,6 +9,10 @@ use bernard::{Message, MessageType};
 use bernard::check::{Response, CheckHealthResponse};
 use futures_util::stream::StreamExt;
 use futures_util::sink::SinkExt;
+use handle_message::request_handler;
+use std::time::Instant;
+
+mod handle_message;
 
 #[tokio::main]
 async fn main() {
@@ -52,13 +56,15 @@ async fn connect_to_parent() {
                 match message.message {
                     MessageType::Request(req) => {
                         println!("Recieved request {}", message.id);
-                        let response = Message{
+
+                        let start_req = Instant::now();
+                        let res = request_handler(req).await;
+                        println!("Request time: {}micros", start_req.elapsed().as_micros());
+
+                        let response = Message {
                             id: 1,
                             destination_route: Vec::new(),
-                            message: 
-                                MessageType::Response(
-                                    Response::CheckHealth(CheckHealthResponse{})
-                                )
+                            message: MessageType::Response(res.unwrap())
                         };
 
                         let bytes = response.encode_and_encrypt(&mut encryptor);

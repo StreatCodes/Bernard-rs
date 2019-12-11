@@ -1,4 +1,5 @@
-Create CheckSystemInfo to get systeminfo, it should be the first request a client receives
-Make health check work
 create a scheduling task in bernard web to check all cleints
 agent: read key and host_id from file
+add ability to measure response times for requests
+make requests a future that resolves when the response is received
+todo generate key and host_id from bernard_web
